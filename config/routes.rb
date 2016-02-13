@@ -11,8 +11,8 @@ Rails.application.routes.draw do
     get 'races/racers' => 'races#racers'
     get 'races/:race_id/results/:id' => 'races#result'
     resources :racers
-    get 'racers/:id/entries' => 'races#entries'
-    get 'racers/:racer_id/entries/:id' => 'races#entry'
+    get 'racers/:id/entries' => 'racers#entries'
+    get 'racers/:racer_id/entries/:id' => 'racers#entry'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
