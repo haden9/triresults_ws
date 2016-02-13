@@ -3,7 +3,14 @@ module Api
     before_action :set_race, only: [:show, :edit, :update, :destroy]
 
     rescue_from Mongoid::Errors::DocumentNotFound do |exception|
-      render plain: "woops: cannot find race[#{params[:id]}]", status: :not_found
+      respond_to do |format|
+        format.json {render plain: "woops: cannot find race[#{params[:id]}]", status: :not_found}
+        format.xml {
+          render status: :not_found,
+          template: 'api/error_msg',
+          locals: {msg: "whoops: cannot find race[#{params[:id]}]"}
+        }
+      end
     end
 
     def index
@@ -15,7 +22,14 @@ module Api
 
     def show
       if request.accept && request.accept != '*/*'
-        render json: @race, status: :ok
+        respond_to do |format|
+          format.json {render json: @race, status: :ok}
+          format.xml {
+            render status: :ok,
+            template: 'api/race',
+            locals: {race: @race}
+          }
+        end
       else
       end
     end
