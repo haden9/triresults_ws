@@ -29,10 +29,21 @@ module Api
     end
 
     def create
-      if !request.accept || request.accept == '*/*'
-        render plain: "#{params[:race][:name]}", status: :ok
+      if request.accept && request.accept != '*/*'
+        @race = Race.new(race_params)
+        if @race.save
+          render plain: @race.name, status: :created
+        else
+          render json: @race.errors, status: :unprocessable_entity
+        end
       else
       end
+    end
+
+    private
+
+    def race_params
+      params.require(:race).permit(:name, :date)
     end
   end
 end
