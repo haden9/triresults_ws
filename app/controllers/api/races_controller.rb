@@ -42,6 +42,13 @@ module Api
       end
     end
 
+    def update
+      if @race.update(race_params)
+        render json: @race, status: :ok
+      else
+      end
+    end
+
     private
 
     def race_params
