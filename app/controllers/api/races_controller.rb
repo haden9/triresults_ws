@@ -4,7 +4,11 @@ module Api
 
     rescue_from Mongoid::Errors::DocumentNotFound do |exception|
       respond_to do |format|
-        format.json {render plain: "woops: cannot find race[#{params[:id]}]", status: :not_found}
+        format.json {
+          render status: :not_found,
+          template: 'api/error_msg',
+          locals: {error: {msg: "woops: cannot find race[#{params[:id]}]"}}
+        }
         format.xml {
           render status: :not_found,
           template: 'api/error_msg',
@@ -23,7 +27,11 @@ module Api
     def show
       if request.accept && request.accept != '*/*'
         respond_to do |format|
-          format.json {render json: @race, status: :ok}
+          format.json {
+            render status: :ok,
+            template: 'api/race',
+            locals: {race: @race}
+          }
           format.xml {
             render status: :ok,
             template: 'api/race',
