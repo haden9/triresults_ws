@@ -43,10 +43,16 @@ module Api
     end
 
     def update
+      Rails.logger.debug("method=#{request.method}")
       if @race.update(race_params)
         render json: @race, status: :ok
       else
       end
+    end
+
+    def destroy
+      @race.destroy
+      render nothing: true, status: :no_content
     end
 
     private
