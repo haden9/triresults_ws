@@ -6,13 +6,13 @@ module Api
       respond_to do |format|
         format.json {
           render status: :not_found,
-          template: 'api/error_msg',
-          locals: {error: {msg: "woops: cannot find race[#{params[:id]}]"}}
+            template: 'api/error_msg',
+            locals: {error: {msg: "woops: cannot find race[#{params[:id]}]"}}
         }
         format.xml {
           render status: :not_found,
-          template: 'api/error_msg',
-          locals: {msg: "whoops: cannot find race[#{params[:id]}]"}
+            template: 'api/error_msg',
+            locals: {msg: "whoops: cannot find race[#{params[:id]}]"}
         }
       end
     end
@@ -29,13 +29,17 @@ module Api
         respond_to do |format|
           format.json {
             render status: :ok,
-            template: 'api/race',
-            locals: {race: @race}
+              template: 'api/race',
+              locals: {race: @race}
           }
           format.xml {
             render status: :ok,
-            template: 'api/race',
-            locals: {race: @race}
+              template: 'api/race',
+              locals: {race: @race}
+          }
+          format.any {
+            render status: :unsupported_media_type,
+              plain: "whoops: we do not support that content-type[#{request.format}]"
           }
         end
       else
