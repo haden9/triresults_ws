@@ -17,6 +17,11 @@ module Api
       end
     end
 
+    rescue_from ActionController::UnknownFormat do |exception|
+        render status: :unsupported_media_type,
+          plain: "whoops: we do not support that content-type[#{request.format}]"
+    end
+
     def index
       if !request.accept || request.accept == '*/*'
         render plain: "/api/races, offset=[#{params[:offset]}], limit=[#{params[:limit]}]"
@@ -36,10 +41,6 @@ module Api
             render status: :ok,
               template: 'api/race',
               locals: {race: @race}
-          }
-          format.any {
-            render status: :unsupported_media_type,
-              plain: "whoops: we do not support that content-type[#{request.format}]"
           }
         end
       else
