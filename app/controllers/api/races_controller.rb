@@ -1,5 +1,7 @@
 module Api
   class RacesController < ApplicationController
+    before_action :set_race, only: [:show, :edit, :update, :destroy]
+
     def index
       if !request.accept || request.accept == '*/*'
         render plain: "/api/races, offset=[#{params[:offset]}], limit=[#{params[:limit]}]"
@@ -8,8 +10,8 @@ module Api
     end
 
     def show
-      if !request.accept || request.accept == '*/*'
-        render plain: "/api/races/#{params[:id]}"
+      if request.accept && request.accept != '*/*'
+        render json: @race.to_json, status: :ok
       else
       end
     end
@@ -44,6 +46,10 @@ module Api
 
     def race_params
       params.require(:race).permit(:name, :date)
+    end
+
+    def set_race
+      @race = Race.find(params[:id])
     end
   end
 end
