@@ -18,5 +18,6 @@ module Api
       if !request.accept || request.accept == '*/*'
       else
       end
+    end
   end
 end
