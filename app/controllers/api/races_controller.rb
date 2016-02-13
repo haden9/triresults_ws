@@ -11,7 +11,7 @@ module Api
 
     def show
       if request.accept && request.accept != '*/*'
-        render json: @race.to_json, status: :ok
+        render json: @race, status: :ok
       else
       end
     end
