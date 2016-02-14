@@ -49,6 +49,7 @@ module Api
 
     def results
       @results = Race.find(params[:id]).entrants
+      fresh_when last_modified: @results.max(:updated_at), public: true
       render status: :ok,
       template: 'api/races/results',
       locals: {results: @results}
