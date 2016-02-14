@@ -48,9 +48,11 @@ module Api
     end
 
     def results
-      @results = Race.find(params[:race_id]).entrants
+      @results = Race.find(params[:id]).entrants
+      render status: :ok,
+      template: 'api/races/results',
+      locals: {results: @results}
     end
-
 
     def result_update
       @result = Race.find(params[:race_id]).entrants.where(id: params[:id]).first
