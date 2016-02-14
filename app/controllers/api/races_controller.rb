@@ -44,15 +44,20 @@ module Api
           }
         end
       else
+        render plain: "/api/races/#{params[:id]}"
       end
     end
 
     def results
-      @results = Race.find(params[:id]).entrants
-      if stale?(last_modified: @results.max(:updated_at))
-        render status: :ok,
-        template: 'api/races/results',
-        locals: {results: @results}
+      if !request.accept || request.accept == '*/*'
+        render plain: "/api/races/#{params[:id]}/results"
+      else
+        @results = Race.find(params[:id]).entrants
+        if stale?(last_modified: @results.max(:updated_at))
+          render status: :ok,
+          template: 'api/races/results',
+          locals: {results: @results}
+        end
       end
     end
 
@@ -90,9 +95,13 @@ module Api
     end
 
     def result
-      @result = Race.find(params[:race_id]).entrants.where(id: params[:id]).first
-      render status: :ok,
-        locals: {result: @result}
+      if !request.accept || request.accept == '*/*'
+        render plain: "/api/races/#{params[:race_id]}/results/#{params[:id]}"
+      else
+        @result = Race.find(params[:race_id]).entrants.where(id: params[:id]).first
+        render status: :ok,
+          locals: {result: @result}
+      end
     end
 
     def create
@@ -128,7 +137,7 @@ module Api
     end
 
     def set_race
-      @race = Race.find(params[:id])
+      @race = Race.find(params[:id]) unless !request.accept || request.accept == '*/*'
     end
   end
 end
