@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :races
     get 'races/:id/results' => 'races#results', as: 'race_results'
     get 'races/:race_id/results/:id' => 'races#result', as: 'race_result'
+    patch 'races/:race_id/results/:id' => 'races#result_update'
     get 'races/racers' => 'races#racers', as: 'race_racers'
     resources :racers
     get 'racers/:id/entries' => 'racers#entries', as: 'racer_entries'

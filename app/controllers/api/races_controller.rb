@@ -51,6 +51,43 @@ module Api
       @results = Race.find(params[:race_id]).entrants
     end
 
+
+    def result_update
+      @result = Race.find(params[:race_id]).entrants.where(id: params[:id]).first
+      result = params[:result]
+      puts params.inspect
+      puts result[:swim]
+      puts result[:t1]
+      if result
+        if result[:swim]
+          @result.swim = @result.race.race.swim
+          @result.swim_secs = result[:swim].to_f
+        end
+
+        if result[:t1]
+          @result.t1 = @result.race.race.t1
+          @result.t1_secs = result[:t1].to_f
+        end
+
+        if result[:bike]
+          @result.bike = @result.race.race.bike
+          @result.bike_secs = result[:bike].to_f
+        end
+
+        if result[:t2]
+          @result.t2 = @result.race.race.t2
+          @result.t2_secs = result[:t2].to_f
+        end
+
+        if result[:run]
+          @result.run = @result.race.race.run
+          @result.run_secs = result[:run].to_f
+        end
+      end
+      @result.save
+      redirect_to action: :result, status: 200 and return
+    end
+
     def result
       @result = Race.find(params[:race_id]).entrants.where(id: params[:id]).first
       render status: :ok,
