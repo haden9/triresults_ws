@@ -7,12 +7,12 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :races
-    get 'races/:id/results' => 'races#results'
-    get 'races/racers' => 'races#racers'
-    get 'races/:race_id/results/:id' => 'races#result'
+    get 'races/:id/results' => 'races#results', as: 'race_results'
+    get 'races/:race_id/results/:id' => 'races#result', as: 'race_result'
+    get 'races/racers' => 'races#racers', as: 'race_racers'
     resources :racers
-    get 'racers/:id/entries' => 'racers#entries'
-    get 'racers/:racer_id/entries/:id' => 'racers#entry'
+    get 'racers/:id/entries' => 'racers#entries', as: 'racer_entries'
+    get 'racers/:racer_id/entries/:id' => 'racers#entry', as: 'racer_entry'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

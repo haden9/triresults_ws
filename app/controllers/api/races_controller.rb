@@ -6,20 +6,20 @@ module Api
       respond_to do |format|
         format.json {
           render status: :not_found,
-            template: 'api/error_msg',
-            locals: {error: {msg: "woops: cannot find race[#{params[:id]}]"}}
+          template: 'api/error_msg',
+          locals: {error: {msg: "woops: cannot find race[#{params[:id]}]"}}
         }
         format.xml {
           render status: :not_found,
-            template: 'api/error_msg',
-            locals: {msg: "whoops: cannot find race[#{params[:id]}]"}
+          template: 'api/error_msg',
+          locals: {msg: "whoops: cannot find race[#{params[:id]}]"}
         }
       end
     end
 
     rescue_from ActionController::UnknownFormat do |exception|
-        render status: :unsupported_media_type,
-          plain: "whoops: we do not support that content-type[#{request.format}]"
+      render status: :unsupported_media_type,
+        plain: "whoops: we do not support that content-type[#{request.format}]"
     end
 
     def index
@@ -34,13 +34,13 @@ module Api
         respond_to do |format|
           format.json {
             render status: :ok,
-              template: 'api/race',
-              locals: {race: @race}
+            template: 'api/race',
+            locals: {race: @race}
           }
           format.xml {
             render status: :ok,
-              template: 'api/race',
-              locals: {race: @race}
+            template: 'api/race',
+            locals: {race: @race}
           }
         end
       else
@@ -48,17 +48,13 @@ module Api
     end
 
     def results
-      if !request.accept || request.accept == '*/*'
-        render plain: "/api/races/#{params[:id]}/results"
-      else
-      end
+      @results = Race.find(params[:race_id]).entrants
     end
 
     def result
-      if !request.accept || request.accept == '*/*'
-        render plain: "/api/races/#{params[:race_id]}/results/#{params[:id]}"
-      else
-      end
+      @result = Race.find(params[:race_id]).entrants.where(id: params[:id]).first
+      render status: :ok,
+        locals: {result: @result}
     end
 
     def create
