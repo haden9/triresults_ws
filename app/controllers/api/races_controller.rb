@@ -104,6 +104,7 @@ module Api
           render json: @race.errors, status: :unprocessable_entity
         end
       else
+        render plain: "#{params[:race][:name]}", status: :ok
       end
     end
 
