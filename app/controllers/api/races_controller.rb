@@ -55,9 +55,6 @@ module Api
     def result_update
       @result = Race.find(params[:race_id]).entrants.where(id: params[:id]).first
       result = params[:result]
-      puts params.inspect
-      puts result[:swim]
-      puts result[:t1]
       if result
         if result[:swim]
           @result.swim = @result.race.race.swim
